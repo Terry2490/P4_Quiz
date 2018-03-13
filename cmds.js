@@ -185,18 +185,23 @@ exports.testCmd = (rl,id) => {
         if(!quiz){
         throw new Error(`No existe un quiz asociado al id=${id}.`);
     }
-    log(`[${colorize(quiz.id,'magenta')}]: ${quiz.question}`);
-        return makeQuestion(rl,'Introduzca la respuesta: ')
-            .then(a=>{
-                if(quiz.answer.toLowerCase()===a.toLowerCase().trim()){
+        return makeQuestion(rl,`${quiz.question}`)
+            .then(answer=>{
+                if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
                     log("Su respuesta es correcta");
                     biglog('Correcta','green');
+                    rl.prompt();
     }else{
         log("Su respuesta es incorrecta");
         biglog('Incorrecta','red');
+        rl.prompt();
     }
             });
     })
+.catch(Sequelize.ValidationError, error =>{
+        errorlog('El quiz es erroneo:');
+    error.errors.forEach(({message})=>errorlog(message));
+})
 .catch(error => {
         errorlog(error.message);
 })
@@ -226,9 +231,9 @@ return new Promise((resolve,reject)=>{
         let quiz = toBeResolved[id];
         toBeResolved.splice(id,1);
 
-        makeQuestion(rl,quiz.question)
-            .then(a=>{
-            if(quiz.answer.toLowerCase()===a.toLowerCase().trim()){
+        makeQuestion(rl,`${quiz.question}`)
+            .then(answer =>{
+            if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
                 score++;
             log("Su respuesta es correcta");
             resolve(playOne());
