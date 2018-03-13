@@ -94,7 +94,7 @@ exports.addCmd = rl => {
         .then(q => {
             return makeQuestion(rl,'Introduzca la respuesta: ')
                 .then(a =>{
-                    return(question: q,answer: a);
+                    return{question: q,answer: a};
             });
     })
     .then(quiz => {
@@ -222,7 +222,7 @@ return new Promise((resolve,reject)=>{
             resolve();
             return;
         }
-        let id =Math.round(Math.random()*(toBeResolved.length);
+        let id =Math.round(Math.random()*(toBeResolved.length));
         let quiz = toBeResolved[id];
         toBeResolved.splice(id,1);
 
