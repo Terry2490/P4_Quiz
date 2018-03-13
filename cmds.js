@@ -222,8 +222,8 @@ exports.playCmd = rl => {
     const playOne = () => {
 return new Promise((resolve,reject)=>{
     if(toBeResolved.length === 0){
-            log('No hay nada más que preguntar.');
-            log(`Final del juego. Aciertos: ${score}`);
+            console.log('No hay nada más que preguntar.');
+            console.log(`Final del juego. Aciertos: ${score}`);
             biglog(`${score}`, 'magenta');
             return;
         }
@@ -235,11 +235,11 @@ return new Promise((resolve,reject)=>{
             .then(answer =>{
             if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
             score++;
-            log(`CORRECTO - Lleva ${score} ${colorize(' aciertos')}`);
+            console.log(`CORRECTO - Lleva ${score} ${colorize(' aciertos')}`);
             return playOne();
         }else{
-            log('INCORRECTO.');
-            log(`Fin del juego. Aciertos: ${score}`);
+            console.log('INCORRECTO.');
+            cosole.log(`Fin del juego. Aciertos: ${score}`);
             biglog(`${score}`, 'magenta');
             rl.prompt();
         }
