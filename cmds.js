@@ -222,7 +222,7 @@ exports.playCmd = rl => {
         return new Sequelize.Promise((resolve,reject)=>{
             if(toBeResolved.length === 0){
             // console.log('No hay nada más que preguntar.');
-            console.log(`Fin del examen. Aciertos: ${score}.`);
+            console.log('Fin del examen. Aciertos: ',score);
             //biglog(`${score}`, 'magenta');
             return;
         }
@@ -234,11 +234,11 @@ exports.playCmd = rl => {
             .then(answer =>{
             if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
             score++;
-            console.log("Correcto - Lleva" ,score ,"aciertos.");
+            console.log('Correcto - Lleva' ,score ,'aciertos.');
             return playOne();
         }else{
             // console.log('INCORRECTO.');
-            console.log(`Incorrecto. Fin del examen. Aciertos: ${score}.`);
+            console.log('Incorrecto.', 'Fin del examen', 'Aciertos: ',score);
             //biglog(`${score}`, 'magenta');
             rl.prompt();
         }
