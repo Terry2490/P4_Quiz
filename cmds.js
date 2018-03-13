@@ -222,7 +222,7 @@ exports.playCmd = rl => {
         return new Sequelize.Promise((resolve,reject)=>{
             if(toBeResolved.length === 0){
             // console.log('No hay nada más que preguntar.');
-            console.log('Fin del examen. Aciertos: ',score);
+            console.log(`Fin del examen. Aciertos: ${score}`);
             //biglog(`${score}`, 'magenta');
             return;
         }
@@ -238,7 +238,7 @@ exports.playCmd = rl => {
             return playOne();
         }else{
             // console.log('INCORRECTO.');
-            console.log('Incorrecto.', 'Fin del examen', 'Aciertos: ',score);
+            console.log(`Incorrecto. Fin del examen. Aciertos: ${score}`);
             //biglog(`${score}`, 'magenta');
             rl.prompt();
         }
