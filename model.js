@@ -6,14 +6,14 @@ const sequelize = new Sequelize("sqlite:quizzes.sqlite",{logging:false});
 sequelize.define('quiz',{
     question:{
         type: Sequelize.STRING,
-        unique: {nsg: "Ya existe esta pregunta"},
+        unique: {msg: "Ya existe esta pregunta"},
         validate:{notEmpty:{msg: "La pregunta no puede estar vacia"}}
     },
     answer:{
         type: Sequelize.STRING,
         validate:{notEmpty:{msg: "La respuesta no puede estar vacia"}}
     }
-    });
+});
 
 
 sequelize.sync()
