@@ -186,16 +186,13 @@ exports.testCmd = (rl,id) => {
     }
     return makeQuestion(rl,`${quiz.question}?`)
     .then(answer=>{
-        if(typeof answer===undefined){
-        throw new Error('No ha introducido una respuesta válida.');
-    }
         if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
         log("Su respuesta es correcta");
-        biglog('Correcta','green');
+     //   biglog('Correcta','green');
         rl.prompt();
     }else{
         log("Su respuesta es incorrecta");
-        biglog('Incorrecta','red');
+      //  biglog('Incorrecta','red');
         rl.prompt();
     }
 });
@@ -226,7 +223,7 @@ exports.playCmd = rl => {
             if(toBeResolved.length === 0){
             console.log('No hay nada más que preguntar.');
             console.log(`Fin del examen. Aciertos: ${score}`);
-            biglog(`${score}`, 'magenta');
+            //biglog(`${score}`, 'magenta');
             return;
         }
         let id =Math.round(Math.random()*(toBeResolved.length-1));
@@ -235,9 +232,6 @@ exports.playCmd = rl => {
 
         makeQuestion(rl,`${quiz.question}?`)
             .then(answer =>{
-            if(typeof answer===undefined){
-            throw new Error('No ha introducido una respuesta válida.');
-        }
             if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
             score++;
             console.log("CORRECTO - Lleva" ,score ,"aciertos");
@@ -245,7 +239,7 @@ exports.playCmd = rl => {
         }else{
             console.log('INCORRECTO.');
             console.log(`Fin del examen. Aciertos: ${score}`);
-            biglog(`${score}`, 'magenta');
+            //biglog(`${score}`, 'magenta');
             rl.prompt();
         }
 
