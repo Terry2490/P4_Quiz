@@ -186,6 +186,9 @@ exports.testCmd = (rl,id) => {
     }
     return makeQuestion(rl,`${quiz.question}?`)
     .then(answer=>{
+        if(typeof answer===undefined){
+        throw new Error('No ha introducido una respuesta válida.');
+    }
         if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
         log("Su respuesta es correcta");
         biglog('Correcta','green');
@@ -232,6 +235,9 @@ exports.playCmd = rl => {
 
         makeQuestion(rl,`${quiz.question}?`)
             .then(answer =>{
+            if(typeof answer===undefined){
+            throw new Error('No ha introducido una respuesta válida.');
+        }
             if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
             score++;
             console.log("CORRECTO - Lleva" ,score ,"aciertos");
