@@ -237,8 +237,8 @@ exports.playCmd = rl => {
             console.log("CORRECTO - Lleva" ,score ,"aciertos");
             return playOne();
         }else{
-            console.log('INCORRECTO.');
-            console.log(`Fin del examen. Aciertos: ${score}`);
+           // console.log('INCORRECTO.');
+            console.log(`Incorrecto-Fin del examen. Aciertos: ${score}`);
             //biglog(`${score}`, 'magenta');
             rl.prompt();
         }
