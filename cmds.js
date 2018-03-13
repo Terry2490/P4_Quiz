@@ -220,7 +220,7 @@ exports.playCmd = rl => {
 
 
     const playOne = () => {
-return new Promise((resolve,reject)=>{
+return new Sequelize.Promise((resolve,reject)=>{
     if(toBeResolved.length === 0){
             console.log('No hay nada más que preguntar.');
             console.log(`Final del juego. Aciertos: ${score}`);
@@ -239,7 +239,7 @@ return new Promise((resolve,reject)=>{
             return playOne();
         }else{
             console.log('INCORRECTO.');
-            cosole.log(`Fin del juego. Aciertos: ${score}`);
+            console.log(`Fin del juego. Aciertos: ${score}`);
             biglog(`${score}`, 'magenta');
             rl.prompt();
         }
@@ -260,7 +260,6 @@ return new Promise((resolve,reject)=>{
         errorlog(error.message);
 })
 .then(()=>{
-    log(score,'magenta');
     rl.prompt();
 })
 
