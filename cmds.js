@@ -179,89 +179,82 @@ exports.editCmd = (rl,id) => {
 exports.testCmd = (rl,id) => {
 
     validateId(id)
-    .then(id => models.quiz.findById(id))
-    .then(quiz => {
-        if(!quiz){
-        throw new Error(`No existe un quiz asociado al id=${id}.`);
-    }
-    return makeQuestion(rl,`${quiz.question}?`)
-    .then(answer=>{
-        if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
-        log("Su respuesta es correcta.");
-     //   biglog('Correcta','green');
+        .then(id => models.quiz.findById(id))
+.then(quiz => {
+        pregunta = quiz.question;
+    makeQuestion(rl, pregunta + '?')
+        .then(a => {
+        if ( a.toLocaleLowerCase() === quiz.answer.toLocaleLowerCase()){
+        log("La respuesta es correcta.", 'green');
+        biglog('Correcta', 'green');
         rl.prompt();
     }else{
-        log("Su respuesta es incorrecta.");
-      //  biglog('Incorrecta','red');
+        log("La respuesta es incorrecta.", 'green');
+        biglog('Incorrecta', 'red');
         rl.prompt();
     }
 });
 })
-    .catch(Sequelize.ValidationError, error =>{
-        errorlog('El quiz es erroneo:');
-    error.errors.forEach(({message})=>errorlog(message));
-})
-    .catch(error => {
+.catch(error => {
         errorlog(error.message);
 })
-    .then(()=>{
+.then(() => {
         rl.prompt();
 });
-
 };
 /**
  *Pregunta todos los quizzes existentes en el modelo en orden aleatorio.
  *Se gana si se contesta a todos satisfactoriamente.
  */
 exports.playCmd = rl => {
-    let score = 0;
-    let toBeResolved = [];
-
-
-    const playOne = () => {
-        return new Sequelize.Promise((resolve,reject)=>{
-            if(toBeResolved.length === 0){
-           // console.log('No hay nada más que preguntar.');
-            console.log(`Fin del examen. Aciertos: ${score}.`);
-            //biglog(`${score}`, 'magenta');
-            return;
-        }
-        let id =Math.round(Math.random()*(toBeResolved.length-1));
-        let quiz = toBeResolved[id];
-        toBeResolved.splice(id,1);
-
-        makeQuestion(rl,`${quiz.question}?`)
-            .then(answer =>{
-            if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
+    var cuenta = 1;
+    var toBeResolved = [];
+    var score = 0;
+    models.quiz.findAll()
+        .each(quiz => {
+        toBeResolved[cuenta-1] = cuenta;
+    cuenta = cuenta +1 ;
+})
+.then(() => {
+        const playOne = ()=> {
+        if ( toBeResolved.length == 0){
+        console.log("No hay nada más que preguntar.");
+        console.log("Fin del examen. Aciertos: ");
+        biglog(score, 'red');
+        rl.prompt();
+    }else{
+        let rand = Math.trunc(Math.random()*toBeResolved.length);
+        let id = toBeResolved[rand];
+        validateId(id)
+            .then(id => models.quiz.findById(id))
+    .then(quiz => {
+            pregunta = quiz.question;
+        makeQuestion(rl, pregunta + '?')
+            .then(a => {
+            console.log(a);
+        if ( a.toLocaleLowerCase() === quiz.answer.toLocaleLowerCase()){
             score++;
-            console.log("Correcto - Lleva" ,score ,"aciertos.");
-            return playOne();
+            console.log("CORRECTO - Lleva "+ score + "aciertos.")
+            toBeResolved.splice(rand,1);
+            playOne();
         }else{
-           // console.log('INCORRECTO.');
-            console.log(`Incorrecto. Fin del examen. Aciertos: ${score}.`);
-            //biglog(`${score}`, 'magenta');
+            console.log("INCORRECTO");
+            console.log("Fin del examen. Aciertos: ");
+            biglog(score,'yellow');
             rl.prompt();
         }
-
+    });
     })
-
-    })
-    }
-
-    models.quiz.findAll({raw:true})
-    .then(quizzes =>{
-        toBeResolved=quizzes;
-})
-    .then(()=>{
-        return playOne();
-})
     .catch(error => {
-        errorlog(error.message);
-})
-    .then(()=>{
-        rl.prompt();
-})
-
+            errorlog(error.message);
+    })
+    .then(() => {
+            rl.prompt();
+    });
+    }
+}
+    playOne();
+});
 };
 /**
  *Muestra los nombres de los autores de la práctica.
