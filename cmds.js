@@ -185,7 +185,7 @@ exports.testCmd = (rl,id) => {
         if(!quiz){
         throw new Error(`No existe un quiz asociado al id=${id}.`);
     }
-        return makeQuestion(rl,`${quiz.question}`)
+        return makeQuestion(rl,`${quiz.question}?`)
             .then(answer=>{
                 if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
                     log("Su respuesta es correcta");
@@ -231,15 +231,17 @@ return new Promise((resolve,reject)=>{
         let quiz = toBeResolved[id];
         toBeResolved.splice(id,1);
 
-        makeQuestion(rl,`${quiz.question}`)
+        makeQuestion(rl,`${quiz.question}?`)
             .then(answer =>{
             if(quiz.answer.toLowerCase()===answer.toLowerCase().trim()){
-                score++;
-            log("Su respuesta es correcta");
-            resolve(playOne());
+            score++;
+            log(`CORRECTO - Lleva ${score} ${colorize(' aciertos')}`);
+            return playOne();
         }else{
-            log("Su respuesta es incorrecta");
-            resolve();
+            log('INCORRECTO.');
+            log(`Fin del juego. Aciertos: ${score}`);
+            biglog(`${score}`, 'magenta');
+            rl.prompt();
         }
 
         })
@@ -258,8 +260,8 @@ return new Promise((resolve,reject)=>{
         errorlog(error.message);
 })
 .then(()=>{
-    biglog(score,'magenta');
-        rl.prompt();
+    log(score,'magenta');
+    rl.prompt();
 })
 
 };
