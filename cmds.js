@@ -216,13 +216,13 @@ exports.playCmd = rl => {
 
     const playOne = () => {
 return new Promise((resolve,reject)=>{
-    if(toBeResolved.length <= 0){
+    if(toBeResolved.length === 0){
         log(`No hay nada mas que preguntar.n\ Fin del Juego. Aciertos : ${score}`);
             biglog(`${score} `,'green');
             resolve();
             return;
         }
-        let id =Math.round(Math.random()*(toBeResolved.length));
+        let id =Math.round(Math.random()*(toBeResolved.length-1));
         let quiz = toBeResolved[id];
         toBeResolved.splice(id,1);
 
