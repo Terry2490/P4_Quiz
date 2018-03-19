@@ -268,7 +268,8 @@ exports.playCmd = rl => {
  */
 exports.creditsCmd = rl => {
     log("Autor de la práctica:");
-    log("Julia Maricalva y Miguel Terriza","green");
+    log("Julia Maricalva","green");
+    log("Miguel Terriza","green");
     rl.prompt();
 };
 /**
